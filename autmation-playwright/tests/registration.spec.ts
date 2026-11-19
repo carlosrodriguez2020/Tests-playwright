@@ -1,11 +1,15 @@
 import {test, expect} from '@playwright/test';
 import path from 'node:path';
+import { faker } from '@faker-js/faker';
 
+
+
+const nombre = faker.person.firstName();
 
 test('registration',async ({page})=>{
 await page.goto('http://127.0.0.1:5500/registration/register.html')
 
-await page.locator('input#name').fill('QA Name')
+await page.locator('input#name').fill(nombre)
 await page.locator('input#last-name').fill('QA LastName')
 await page.locator('//label[contains(text(),"Edad:")]/following-sibling::input').fill('36')
 
@@ -25,7 +29,7 @@ await page.locator('input#picture').setInputFiles(
   path.resolve(__dirname, '../img/ShortcutsSQL.jpg')
 );
 
-console.log('img seleccionada')
+await page.screenshot({path: 'screenshots/register1.png'})
 
 
 
@@ -41,6 +45,13 @@ const [summaryPage] = await Promise.all([
 await summaryPage.waitForLoadState()
 await expect(summaryPage).toHaveTitle('Summary')
 
-await page.pause();
+await summaryPage.screenshot({
+  path: 'screenshots/summary1.png',
+  fullPage: true
+});
+
+expect(1).toBe(2);
+
+//await page.pause();
 
 })
