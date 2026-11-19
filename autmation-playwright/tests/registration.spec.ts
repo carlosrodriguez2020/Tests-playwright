@@ -27,8 +27,20 @@ await page.locator('input#picture').setInputFiles(
 
 console.log('img seleccionada')
 
-await page.locator('button#save-btn').click()
 
-//await page.pause();
+
+// Validar la navegación y el título
+
+const [summaryPage] = await Promise.all([
+    
+    page.waitForEvent('popup'),
+    page.locator('button#save-btn').click()
+    
+])
+
+await summaryPage.waitForLoadState()
+await expect(summaryPage).toHaveTitle('Summary')
+
+await page.pause();
 
 })
